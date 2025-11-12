@@ -1,0 +1,5 @@
+node_modules/
+downloads/
+.wwebjs_auth/
+cookies.txt
+*.zip
