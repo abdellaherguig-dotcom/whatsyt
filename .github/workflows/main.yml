@@ -1,0 +1,33 @@
+name: Test yt-dlp Install and Download
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test-yt-dlp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update package list
+        run: sudo apt update
+
+      - name: Install yt-dlp
+        run: |
+          sudo apt install -y yt-dlp
+          yt-dlp --version
+
+      - name: Test yt-dlp on YouTube link
+        run: |
+          mkdir output
+          yt-dlp -f bestaudio --no-playlist -o "output/test_audio.%(ext)s" "https://youtu.be/Q2BjKRiBmQQ?si=UIBXKMqKyEP_eQ2F"
+          ls -lh output
+
+      - name: Upload downloaded file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloaded-audio
+          path: output/
